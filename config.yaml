@@ -1,0 +1,43 @@
+---
+- hosts: all
+  become: true 
+  tasks:
+
+  - name: install python3 and pip package
+    apt:
+      name:
+         - python3-pip
+      state: latest
+      update_cache: yes
+    when: ansible_distribution == "Ubuntu"
+
+  - name: install python3 and pip package
+    yum:
+      name:
+         - python3-pip
+      state: latest
+      update_cache: yes
+    when: ansible_distribution == "CentOS"
+
+
+  - name: use pip3 as default
+    shell: update-alternatives --install  /usr/bin/pip pip /usr/bin/pip3 1
+
+  - name: use pyhon3 as default
+    shell: update-alternatives --install /usr/bin/python python /usr/bin/python3 10   
+
+  - name: install java in Ubuntu
+    dnf:
+      name: default-jre
+      state: latest
+      update_cache: yes
+    when: ansible_distribution == "Ubuntu"
+
+  - name: install java in CentOS
+    yum:
+      name: default-jre
+      state: latest
+      update_cache: yes     
+    when: ansible_distribution == "CentOS"
+
+
